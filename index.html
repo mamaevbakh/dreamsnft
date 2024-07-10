@@ -5,158 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Telegram Mini Apps Vanilla JS Sample App</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
     <style>
         body {
-            --bg-color: var(--tg-theme-bg-color);
-            font: 12px/18px "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--tg-theme-text-color);
-            margin: 48px 24px;
+            margin: 0;
             padding: 0;
-            color-scheme: var(--tg-color-scheme);
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('./assets/dreams_test.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            position: relative;
         }
-
-        a {
-            color: var(--tg-theme-link-color);
-        }
-        #viewport {
-            position: fixed;
-            left: 0;
-            right: 0;
-            top: 0;
-            height: var(--tg-viewport-stable-height, 100vh);
-            pointer-events: none;
-            transition: all .2s ease;
-        }
-        #viewport:after {
-            content: '';
-            display: block;
+        .overlay {
             position: absolute;
-            left: 0;
-            right: 0;
             top: 0;
-            bottom: 0;
-            border-width: 4px;
-            border-style: solid;
-            border-image: linear-gradient(45deg, rgba(64, 224, 208, .5), rgba(173, 255, 47, .5)) 1;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
         }
-
-        #viewport-params-size,
-        #viewport-params-expand {
-            content: attr(text);
-            position: absolute;
+        h1 {
+            color: white;
+            padding-right: 1em;
+        }
+        h1 div {
             display: inline-block;
-            background: var(--tg-theme-link-color, rgb(64, 224, 208));
-            right: 4px;
-            left: auto;
-            font-size: 8px;
-            padding: 4px;
-            vertical-align: top;
+            text-shadow: 2px 2px 3px #3D6366;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
         }
-        #viewport-params-size {
-            top: 4px;
+        h1 div:nth-child(1) { animation-name: example-1; animation-delay: 0.2s; }
+        h1 div:nth-child(2) { animation-name: example-2; animation-delay: 0.4s; }
+        h1 div:nth-child(3) { animation-name: example-3; animation-delay: 0.6s; }
+        h1 div:nth-child(4) { animation-name: example-4; animation-delay: 0.8s; }
+        h1 div:nth-child(5) { animation-name: example-5; animation-delay: 1s; }
+        h1 div:nth-child(6) { animation-name: example-6; animation-delay: 1.2s; }
+        h1 div:nth-child(7) { animation-name: example-7; animation-delay: 1.4s; }
+        h1 div:nth-child(8) { animation-name: example-8; animation-delay: 1.6s; }
+        h1 div:nth-child(9) { animation-name: example-9; animation-delay: 1.8s; }
+        h1 div:nth-child(10) { animation-name: example-10; animation-delay: 2s; }
+        h1 div:nth-child(11) { animation-name: example-11; animation-delay: 2.2s; }
+
+        @keyframes example-1 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(8px); opacity: 0.8; }
+            100% { transform: translateY(0); }
         }
-        #viewport-params-expand {
-            top: 30px;
+        @keyframes example-2 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(16px); opacity: 0.7; }
+            100% { transform: translateY(0); }
+        }
+        @keyframes example-3 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(24px); opacity: 0.6; }
+            100% { transform: translateY(0); }
+        }
+        @keyframes example-4 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(32px); opacity: 0.5; }
+            100% { transform: translateY(0); }
+        }
+        @keyframes example-5 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(40px); opacity: 0.4; }
+            100% { transform: translateY(0); }
+        }
+        @keyframes example-6 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(48px); opacity: 0.3; }
+            100% { transform: translateY(0); }
+        }
+        @keyframes example-7 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(56px); opacity: 0.2; }
+            100% { transform: translateY(0); }
+        }
+        @keyframes example-8 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(64px); opacity: 0.1; }
+            100% { transform: translateY(0); }
+        }
+        @keyframes example-9 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(72px); opacity: 0.05; }
+            100% { transform: translateY(0); }
+        }
+        @keyframes example-10 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(80px); opacity: 0.025; }
+            100% { transform: translateY(0); }
+        }
+        @keyframes example-11 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(88px); opacity: 0.0125; }
+            100% { transform: translateY(0); }
         }
     </style>
 </head>
 
 <body>
-    <main>
-        <div align="center">
-            <a href="https://ton.org/"><img width="48" src="./assets/tapps.png" alt="logo of telegram web apps"></a>
-        </div>
-        <h1>Modals</h1>
-        <button onclick="Telegram.WebApp.showAlert('Hello World!');">Launch Alert</button>
-        <button onclick="showPopup();">Launch Popup</button>
-
-        <h1>Links</h1>
-        <ul>
-            <li>
-                <a href="javascript:Telegram.WebApp.openTelegramLink('https://t.me/trendingapps');">Open link within Telegram</a>
-            </li>
-            <li>
-                <a href="javascript:Telegram.WebApp.openLink('https://ton.org/');">Open link in external browser</a>
-            </li>
-            <li>
-                <a href="javascript:Telegram.WebApp.openLink('https://telegra.ph/api',{try_instant_view:true});">Open link inside Telegram webview</a>
-            </li>
-        </ul>
-
-        <h1>Buttons</h1>
-        <button onclick="Telegram.WebApp.expand();">Expand Webview</button>
-        <button onclick="toggleMainButton();">Toggle Main Button</button>
-    </main>
-    <div id="viewport"></div>
-    <div id="viewport-params-size"></div>
-    <div id="viewport-params-expand"></div>
+    <div class="overlay"></div>
+    <h1>
+        <div>D</div>
+        <div>R</div>
+        <div>E</div>
+        <div>A</div>
+        <div>M</div>
+        <div>S</div>
+        <div></div>
+        <div>S</div>
+        <div>O</div>
+        <div>O</div>
+        <div>N</div>
+    </h1>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // Init TWA
         Telegram.WebApp.ready();
-
-        // Event occurs whenever theme settings are changed in the user's Telegram app (including switching to night mode).
-        Telegram.WebApp.onEvent('themeChanged', function() {
-            document.documentElement.className = Telegram.WebApp.colorScheme;
-        });
-
-        // Show main button
-        Telegram.WebApp.MainButton.setParams({
-            text: 'Main Button'
-        });
-        Telegram.WebApp.MainButton.onClick(function () {
-            Telegram.WebApp.showAlert('Main Button was clicked')
-        });	
-        Telegram.WebApp.MainButton.show();
-
-        // Function to call showPopup API
-        function showPopup() {
-            Telegram.WebApp.showPopup({
-                title: 'Title',
-                message: 'Some message',
-                buttons: [
-                    {id: 'link', type: 'default', text: 'Open ton.org'},
-                    {type: 'cancel'},
-                ]
-            }, function(btn) {
-                if (btn === 'link') {
-                    Telegram.WebApp.openLink('https://ton.org/');
-                }
-            });
-        };
-
-        // Function to toggle main TWA button
-        function toggleMainButton() {
-            if (Telegram.WebApp.MainButton.isVisible) {
-                Telegram.WebApp.MainButton.hide();
-            } else {
-                Telegram.WebApp.MainButton.show();
-            }
-        };
-
-        function setViewportData() {
-            var sizeEl = document.getElementById('viewport-params-size');
-            sizeEl.innerText = 'width: ' + window.innerWidth + ' x ' + 
-                'height: ' + Telegram.WebApp.viewportStableHeight;
-
-            var expandEl = document.querySelector('#viewport-params-expand');
-            expandEl.innerText = 'Is Expanded: ' + (Telegram.WebApp.isExpanded ? 'true' : 'false');
-        }
-
-        Telegram.WebApp.setHeaderColor('secondary_bg_color');
-
-        setViewportData();
-        Telegram.WebApp.onEvent('viewportChanged', setViewportData);
-
-        Telegram.WebApp.onEvent('themeChanged', function() {
-            document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
-        });
-
     </script>
-
-    <!-- Eruda is console for mobile browsers -->
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-    <script>eruda.init();</script>
 </body>
 </html>
